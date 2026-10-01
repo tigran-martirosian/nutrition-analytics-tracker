@@ -1,0 +1,580 @@
+/* Global base styles */
+
+:root {
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.45;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: #edf6eb;
+  background-color: #101a14;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* App-wide tabular numerals, so every digit takes the same width and KPIs
+     and table columns line up vertically. */
+  font-feature-settings: "tnum" on;
+  font-variant-numeric: tabular-nums;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  background: #101a14;
+}
+
+/* Inherit the tabular-numerals rule everywhere it matters. */
+input, button, select, textarea, table, td, th {
+  font-feature-settings: "tnum" on;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reset the default UA chrome, since the React shell paints its own. */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+/* Visible focus ring (accessibility), kept subtle to fit the dark palette. */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #7dbb94;
+  outline-offset: 2px;
+}
+
+/* Shared data-table conventions */
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.data-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #21362b;
+  border-bottom: 1px solid #2e4f3d;
+  padding: 16px 20px;
+  font-size: 15.5px;
+  font-weight: 850;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: #b8ccb6;
+  text-align: left;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.data-table thead th.num { text-align: right; }
+.data-table thead th.center { text-align: center; }
+
+.data-table tbody tr {
+  min-height: 86px;
+}
+
+.data-table tbody td {
+  padding: 22px 20px;
+  border-bottom: 1px solid #2e4f3d;
+  font-size: 16px;
+  color: #edf6eb;
+  vertical-align: middle;
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.data-table tbody td.num {
+  text-align: right;
+  font-family: 'IBM Plex Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table tbody td.source-cell {
+  font-family: 'IBM Plex Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table tbody tr.row-interactive { transition: background 0.15s ease; }
+.data-table tbody tr.row-interactive:hover { background: #1d3127; }
+
+/* Subtle scrollbar matching the dark palette. */
+::-webkit-scrollbar { width: 8px; height: 8px; background: #101a14; }
+::-webkit-scrollbar-thumb { background: #2e4f3d; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #5b7b67; }
+
+/* Hide spin buttons on numeric inputs so KPI-style cells stay clean. */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  opacity: 0.4;
+}
+
+/* Recharts default surface tweak. */
+.recharts-tooltip-wrapper:focus-visible { outline: none; }
+
+/* Pulse animation reused by loading shell. */
+@keyframes pulse {
+  0%, 80%, 100% { background: #2e4f3d; }
+  40%           { background: #7dbb94; }
+}
+
+/* Responsive grid helpers */
+
+.grid-kpi-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
+  gap: 20px;
+}
+.grid-kpi-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.grid-2-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+}
+.grid-2-col-wide-left {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(340px, 1fr);
+  gap: 20px;
+}
+.grid-2-col-wide-right {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 20px;
+}
+
+/* Tablets / small laptops: 4 to 2 cols, 3 to 2 cols */
+@media (max-width: 1100px) {
+  .grid-kpi-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-kpi-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Narrow layouts: content splits collapse before tables get cramped. */
+@media (max-width: 900px) {
+  .grid-kpi-4,
+  .grid-kpi-3,
+  .grid-2-col,
+  .grid-2-col-wide-left,
+  .grid-2-col-wide-right {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Tables shouldn't break a layout. Let them scroll horizontally inside their
+   wrapper instead of forcing the page to overflow. */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table-scroll > table { min-width: 1120px; }
+
+/* Food Database: compact management cards. Scoped away from Planner tables. */
+.database-category-masonry {
+  column-count: 2;
+  column-gap: 20px;
+  width: 100%;
+  min-width: 0;
+}
+
+.database-category-card {
+  break-inside: avoid;
+  display: inline-block;
+  page-break-inside: avoid;
+  vertical-align: top;
+  width: 100%;
+  margin: 0 0 20px;
+  box-sizing: border-box;
+  min-width: 0;
+  background: #172a20;
+  border: 1px solid #2e4f3d;
+  border-radius: 12px;
+  overflow: visible;
+  position: relative;
+}
+
+.database-category-header {
+  min-height: 48px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: color-mix(in srgb, var(--category-color) 12%, transparent);
+  border-radius: 11px 11px 0 0;
+}
+
+.database-category-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--category-color);
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.database-category-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: var(--category-color);
+  flex: 0 0 auto;
+}
+
+.database-category-count {
+  color: #b8ccb6;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.database-category-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: #82997f;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.database-category-stats strong {
+  color: #edf6eb;
+  font-size: 12px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.database-grid-header,
+.database-grid-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 72px 64px 72px 82px 34px;
+  align-items: center;
+  column-gap: 8px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.database-grid-header {
+  padding: 8px 12px;
+  border-top: 1px solid #2e4f3d;
+  border-bottom: 1px solid #2e4f3d;
+  background: #21362b;
+  color: #b8ccb6;
+  font-size: 10.5px;
+  font-weight: 850;
+  letter-spacing: 0.045em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.database-grid-header > div {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.database-row-list {
+  min-width: 0;
+  overflow: visible;
+}
+
+.database-grid-row {
+  position: relative;
+  padding: 10px 12px;
+  border-bottom: 1px solid #2e4f3d;
+  color: #edf6eb;
+  transition: background 0.15s ease;
+}
+
+.database-grid-row:last-child {
+  border-bottom: 0;
+  border-radius: 0 0 11px 11px;
+}
+
+.database-grid-row:hover {
+  background: #1d3127;
+}
+
+.database-food-cell,
+.database-food-copy {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.database-food-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.database-food-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  margin-top: 5px;
+}
+
+.database-food-name {
+  min-width: 0;
+  overflow: hidden;
+  color: #edf6eb;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.18;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.database-food-meta {
+  max-width: 100%;
+  overflow: hidden;
+  color: #82997f;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.database-warning-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+  padding-left: 15px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.database-warning-row > span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.database-cell-num,
+.database-cell-unit,
+.database-cell-actions {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.database-cell-num {
+  justify-content: flex-end;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  font-family: inherit;
+}
+
+.database-qty-cell {
+  padding-right: 4px;
+}
+
+.database-cell-unit {
+  justify-content: flex-start;
+  text-align: left;
+  color: #b8ccb6;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.database-unit-cell {
+  padding-left: 4px;
+}
+
+.database-cell-actions {
+  justify-content: center;
+}
+
+.database-weekly-cost {
+  color: #7dbb94;
+}
+
+.database-number-button,
+.database-number-input {
+  width: 64px;
+  max-width: 100%;
+  box-sizing: border-box;
+  border-radius: 6px;
+  color: #edf6eb;
+  font: inherit;
+  text-align: right;
+}
+
+.database-number-button {
+  min-width: 0;
+  padding: 4px 2px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: text;
+}
+
+.database-number-button:hover {
+  background: #101a14;
+  border-color: #2e4f3d;
+}
+
+.database-edit-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.database-number-input {
+  padding: 4px 3px;
+  border: 1px solid #7dbb94;
+  background: #101a14;
+  outline: none;
+}
+
+.database-edit-wrap > div {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 40;
+  padding: 3px 6px;
+  border: 1px solid #2e4f3d;
+  border-radius: 6px;
+  background: #101a14;
+  white-space: nowrap;
+}
+
+.database-row-menu-wrap {
+  position: relative;
+  width: 32px;
+  height: 28px;
+  overflow: visible;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.database-row-menu-button {
+  width: 30px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #2e4f3d;
+  border-radius: 8px;
+  background: #21362b;
+  color: #b8ccb6;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.database-row-menu-button:hover {
+  border-color: #5b7b67;
+  background: #2a4437;
+  color: #edf6eb;
+}
+
+.database-row-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  z-index: 80;
+  min-width: 132px;
+  padding: 4px;
+  border: 1px solid #2e4f3d;
+  border-radius: 8px;
+  background: #172a20;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+}
+
+.database-row-menu button {
+  width: 100%;
+  display: block;
+  padding: 7px 9px;
+  border-radius: 6px;
+  color: #edf6eb;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.database-row-menu button:hover {
+  background: #21362b;
+}
+
+.database-row-menu button.danger {
+  color: #ff8a7a;
+}
+
+@media (min-width: 1700px) {
+  .database-category-masonry {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 1100px) {
+  .database-category-masonry {
+    column-count: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .database-grid-header {
+    display: none;
+  }
+
+  .database-grid-row {
+    grid-template-columns: minmax(0, 1fr) 72px 64px 72px 82px 34px;
+    grid-template-areas:
+      "food food food food food actions"
+      "quantity unitCol price price cost cost";
+    row-gap: 8px;
+  }
+
+  .database-food-cell { grid-area: food; }
+  .database-grid-row > .database-cell-num:nth-of-type(2) { grid-area: quantity; }
+  .database-cell-unit { grid-area: unitCol; }
+  .database-grid-row > .database-cell-num:nth-of-type(4) { grid-area: price; }
+  .database-weekly-cost { grid-area: cost; }
+  .database-cell-actions { grid-area: actions; }
+
+  .database-category-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
