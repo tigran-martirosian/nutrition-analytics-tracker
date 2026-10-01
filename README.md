@@ -4,17 +4,24 @@ I wanted to plan a week of food and see the nutrients and the cost in one place,
 
 ![Dashboard with daily totals and charts, using the built-in sample foods and the higher-calorie sample plan](docs/dashboard.png)
 
-## What it does
+The built-in foods and plans are sample data with rounded values. They aren't accurate nutrition data.
 
-- Food list with nutrition per 100 g, unit conversion and price per unit.
+## What you can do with it
+
+- Keep a food list with nutrition per 100 g, unit conversion and price per unit.
 - Search and import from USDA FoodData Central, one food at a time or in bulk for the whole list.
-- Every value remembers where it came from (USDA or typed in by hand), so an import never replaces a value I entered myself.
-- Weekly planner, a dashboard with daily and weekly totals and charts, a cost page and saved plan versions.
-- JSON and CSV import and export.
+- Plan a week, then see daily and weekly totals and charts, a cost page and saved plan versions.
+- Import and export JSON and CSV.
 
-## How it's built
+## Imports don't overwrite what I typed
 
-React 19, Vite 7 and Recharts. Everything is saved in the browser's `localStorage`.
+Every value remembers where it came from (USDA or typed in by hand), so an import never replaces a value I entered myself. The rules for that are in `src/utils/mergeNutrition.js`, about 50 lines, and it's the file I'd read first.
+
+USDA doesn't cover everything. The values for creatine, carnosine, taurine and similar compounds come from a small table of estimates I put together by hand.
+
+## Code
+
+React 19, Vite 7 and Recharts. Everything is saved in the browser's `localStorage`, so there is no server and no sync.
 
 - `src/pages/`: one file per page (Dashboard, Database, Planner, Analytics, Cost, Versions).
 - `src/services/`: the USDA API calls and the mapping from its nutrient IDs to the app's fields.
@@ -26,23 +33,11 @@ React 19, Vite 7 and Recharts. Everything is saved in the browser's `localStorag
 ```bash
 npm install
 npm run dev
+npm test
 ```
+
+`npm test` runs 17 checks: the USDA nutrient mapping, unit conversion, and CSV import and export. The pages have no automated tests.
 
 USDA lookups work with the public `DEMO_KEY`, which allows about 30 requests an hour. For more, get a free key at <https://fdc.nal.usda.gov/api-key-signup.html> and set `VITE_USDA_API_KEY` in `.env` (see `.env.example`). The key ends up in the built app, so don't commit `.env`.
 
 `npm run electron` opens the same app as a desktop window.
-
-## Test
-
-```bash
-npm test
-```
-
-17 checks: the USDA nutrient mapping, unit conversion, and CSV import and export.
-
-## Limitations
-
-- The built-in foods and plans are sample data with rounded values. They aren't accurate nutrition data.
-- Only the USDA mapping, unit conversion and CSV code are tested. The pages have no automated tests.
-- Everything is stored in the browser. There is no server and no sync.
-- The values for creatine, carnosine, taurine and similar compounds come from a small table of estimates I put together by hand.
