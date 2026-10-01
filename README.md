@@ -36,7 +36,7 @@ npm run dev
 npm test
 ```
 
-`npm test` runs 17 checks: the USDA nutrient mapping, unit conversion, and CSV import and export. The pages have no automated tests.
+`npm test` runs 17 checks on the logic behind the pages: the USDA nutrient mapping, unit conversion, and CSV import and export.
 
 USDA lookups work with the public `DEMO_KEY`, which allows about 30 requests an hour. For more, get a free key at <https://fdc.nal.usda.gov/api-key-signup.html> and set `VITE_USDA_API_KEY` in `.env` (see `.env.example`). The key ends up in the built app, so don't commit `.env`.
 
