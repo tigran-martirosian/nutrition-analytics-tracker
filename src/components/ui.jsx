@@ -254,49 +254,6 @@ export function WarningBadge({ text, level = "warn" }) {
   );
 }
 
-// Muted badge such as "USDA 12345". style can swap in a larger token.
-export function SourceBadge({ label, style }) {
-  return (
-    <span style={{
-      display: "inline-flex", alignItems: "center", gap: 4,
-      ...TYPE.sourceCode, color: C.textDim,
-      background: C.bg, border: `1px solid ${C.border}`,
-      padding: "4px 10px", borderRadius: R.btnSm,
-      ...style,
-    }}>
-      {label}
-    </span>
-  );
-}
-
-export function ToggleSwitch({ on, onClick, ariaLabel }) {
-  return (
-    <button
-      onClick={onClick}
-      aria-label={ariaLabel}
-      style={{
-        position: "relative",
-        width: 42, height: 22,
-        borderRadius: R.pill,
-        background: on ? STATUS.ok : C.surface3,
-        border: `1px solid ${on ? STATUS.ok : C.border}`,
-        cursor: "pointer",
-        transition: "background 0.18s, border-color 0.18s",
-        padding: 0,
-      }}
-    >
-      <span style={{
-        position: "absolute",
-        top: 2, left: on ? 22 : 2,
-        width: 16, height: 16,
-        borderRadius: "50%",
-        background: on ? C.bg : C.textDim,
-        transition: "left 0.18s, background 0.18s",
-      }} />
-    </button>
-  );
-}
-
 export function EmptyState({ title, hint }) {
   return (
     <div style={{

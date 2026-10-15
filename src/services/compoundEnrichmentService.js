@@ -1,8 +1,6 @@
 // Extra values for nutrients USDA does not reliably cover (K2, creatine, taurine,
 // hydroxyproline, carnosine, anserine). If nothing is known, no value is made up.
 
-import { patchProvenance } from "../utils/provenance.js";
-
 // Values per 100 g, in mg unless noted.
 // Sources: Daley et al. (2010), Purchas & Busboom (2005), Toldra et al., FooDB.ca.
 const COMPOUND_DB = {
@@ -74,34 +72,4 @@ export function getSecondaryEnrichment(food) {
   }
 
   return null;
-}
-
-// Adds the secondary values to a food and updates its provenance.
-export function enrichFoodWithSecondaryCompounds(food, mergedNutrition) {
-  const enrichment = getSecondaryEnrichment(food);
-  if (!enrichment) return { ...food, nutrition_per_100g: mergedNutrition };
-
-  const { nutrition: extras, confidence, source } = enrichment;
-
-  const enrichedPaths = [];
-  function collectPaths(obj, prefix = "") {
-    for (const [key, val] of Object.entries(obj)) {
-      const path = prefix ? `${prefix}.${key}` : key;
-      if (val !== null && typeof val === "object") {
-        collectPaths(val, path);
-      } else {
-        enrichedPaths.push(path);
-      }
-    }
-  }
-  collectPaths(extras);
-
-  const newProvenance = patchProvenance(food.provenance ?? {}, enrichedPaths, source, confidence);
-
-  return {
-    ...food,
-    nutrition_per_100g: mergedNutrition,
-    _pendingEnrichment: extras,  // consumed by syncFoodNutrition
-    provenance: newProvenance,
-  };
 }

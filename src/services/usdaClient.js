@@ -2,11 +2,7 @@
 // DEMO_KEY is rate-limited to 30 requests per hour per IP. Put your own key in VITE_USDA_API_KEY (see .env.example).
 // Free key signup: https://fdc.nal.usda.gov/api-key-signup.html
 
-import {
-  USDA_AMINO_ID_MAP,
-  resolveAminoPath,
-  APP_USDA_AMINO_KEYS,
-} from "../data/usdaNutrientMap.js";
+import { resolveAminoPath } from "../data/usdaNutrientMap.js";
 
 export const USDA_API_KEY = import.meta.env?.VITE_USDA_API_KEY || "DEMO_KEY";
 const API_KEY = USDA_API_KEY;
@@ -216,4 +212,3 @@ export async function fetchUSDAFoodWithMeta(fdcId) {
   return { nutrition, source };
 }
 
-export { USDA_AMINO_ID_MAP, APP_USDA_AMINO_KEYS };

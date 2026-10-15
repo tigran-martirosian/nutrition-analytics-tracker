@@ -120,17 +120,6 @@ export const TYPE = {
   analyticsControl:  { fontFamily: FONT.ui,      fontSize: 16, fontWeight: 700, lineHeight: 1.2,  letterSpacing: "-0.01em" },
 };
 
-export const T = {
-  pageTitle:    TYPE.pageTitle,
-  sectionLabel: TYPE.panelTitle,
-  metric:       TYPE.kpiValue,
-  metricSm:     { ...TYPE.kpiValue, fontSize: 24, lineHeight: 1.1 },
-  body:         { fontSize: 14, color: C.text,    fontFamily: FONT.ui },
-  bodyDim:      { ...TYPE.panelSub, color: C.textDim },
-  helper:       TYPE.panelSub,
-  num:          TYPE.number,
-};
-
 // Recharts tooltip theme - shared across every chart.
 export const TT = {
   contentStyle: {
@@ -167,17 +156,6 @@ export const btnStyle = (bg) => ({
   ...TYPE.control,
   transition: "all 0.18s ease",
 });
-
-export const btnSmall = {
-  background: C.surface2,
-  color: C.textDim,
-  border: `1px solid ${C.border}`,
-  borderRadius: R.btnSm,
-  padding: "8px 12px",
-  cursor: "pointer",
-  ...TYPE.control,
-  transition: "all 0.15s ease",
-};
 
 // Semantic button variants - prefer these over raw btnStyle(bg).
 export const BTN = {
@@ -225,13 +203,5 @@ export const labelSty = {
   fontWeight: 650,
   letterSpacing: 0,
 };
-
-export const cardStyle = (opts = {}) => ({
-  background: C.surface,
-  borderRadius: R.card,
-  border: `1px solid ${C.border}`,
-  padding: opts.dense ? SP.cardPad : SP.cardPadLg,
-  ...(opts.tinted && { borderColor: opts.tinted + "40" }),
-});
 
 export const WEEKS_PER_MONTH = 4.33;

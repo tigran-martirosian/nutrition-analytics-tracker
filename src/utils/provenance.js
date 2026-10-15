@@ -15,11 +15,6 @@ export function buildProvenance(nutritionObj, source, confidence, prefix = "") {
   return out;
 }
 
-// Entries in overrides win over existing ones.
-export function mergeProvenance(existing = {}, overrides = {}) {
-  return { ...existing, ...overrides };
-}
-
 // Sets source and confidence for the given dot paths.
 export function patchProvenance(provenance, paths, source, confidence) {
   const out = { ...provenance };

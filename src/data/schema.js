@@ -1,24 +1,6 @@
 // Key names and data shapes for the whole app.
 // If the data source changes, only this file should need to change.
 
-export const VITAMIN_KEYS = {
-  A: "a", D: "d", E: "e", K1: "k1", K2: "k2",
-  B1: "b1", B2: "b2", B3: "b3", B5: "b5", B6: "b6",
-  B7: "b7", B9: "b9", B12: "b12", C: "c",
-};
-
-export const MINERAL_KEYS = {
-  CALCIUM: "calcium", MAGNESIUM: "magnesium", POTASSIUM: "potassium",
-  SODIUM: "sodium", PHOSPHORUS: "phosphorus", ZINC: "zinc",
-  COPPER: "copper", IRON: "iron", SELENIUM: "selenium",
-  IODINE: "iodine", MANGANESE: "manganese", SILICA: "silica",
-};
-
-export const MACRO_KEYS = {
-  CALORIES: "calories", PROTEIN: "protein", FAT: "fat", CARBS: "carbs",
-  OMEGA3: "omega3", OMEGA6: "omega6", CREATINE: "creatine", TAURINE: "taurine",
-};
-
 export const FAT_KEYS = {
   SATURATED: "saturated", MONOUNSATURATED: "monounsaturated",
   POLYUNSATURATED: "polyunsaturated", LINOLEIC: "linoleic", TRANS: "trans",
@@ -49,21 +31,6 @@ export const FATTY_ACID_KEYS = {
   ARACHIDONIC:     "arachidonic",
   LINOLEIC:        "linoleic",
   TRANS:           "trans",
-};
-
-// Source provider constants
-export const SOURCE_PROVIDERS = {
-  USDA:        "usda",
-  MANUAL:      "manual",
-  SECONDARY:   "secondary",
-  MERGED:      "merged",
-};
-
-// Confidence levels for provenance tracking
-export const CONFIDENCE = {
-  HIGH:   "high",    // Direct structured source, strong mapping
-  MEDIUM: "medium",  // Secondary database or literature-derived
-  LOW:    "low",     // Estimated from food class / tissue type
 };
 
 export const CATEGORIES = {

@@ -193,9 +193,3 @@ export function calcTargets(stats) {
 
 export const pct      = (val, rda) => Math.round((val / rda) * 100);
 export const fmtPct   = (p) => `${p}%`;
-export const rdaColor = (p) =>
-  p < 50  ? C.red
-  : p < 80  ? C.orange
-  : p > 300 ? C.purple
-  : p > 200 ? C.orange
-  : C.accent;

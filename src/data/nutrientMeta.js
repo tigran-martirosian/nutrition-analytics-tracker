@@ -83,11 +83,3 @@ export const AMINO_GROUPS = {
     },
   },
 };
-
-// Which nutrients appear on the Dashboard summary cards
-export const DASHBOARD_NUTRIENTS = [
-  { k: "d",         type: "vit", ...NUTRIENT_META.vitamins.d },
-  { k: "potassium", type: "min", ...NUTRIENT_META.minerals.potassium },
-  { k: "sodium",    type: "min", ...NUTRIENT_META.minerals.sodium },
-  { k: "magnesium", type: "min", ...NUTRIENT_META.minerals.magnesium },
-];
